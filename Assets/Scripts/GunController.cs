@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
@@ -17,6 +19,13 @@ public class GunController : MonoBehaviour
     [SerializeField] private Animator animator;
     //射击间隔
     private float nextTimeToShoot = 0;
+    //配置弹药
+    [SerializeField] private int currentAmmo;
+    [SerializeField] private int maxAmmo = 10;
+    [SerializeField] private int magazineAmmo = 30;//弹夹
+
+    [SerializeField] private TextMeshProUGUI ammoInfoText;
+    private bool isReload = false;
     private void Start()
     {
         //配置射击动作
@@ -24,8 +33,22 @@ public class GunController : MonoBehaviour
         shootAction.AddBinding("<Mouse>/leftButton");
         shootAction.Enable();
     }
+    private void OnEnable()
+    {
+        isReload = false;
+        animator.SetBool("isReload", false);
+
+    }
     private void Update()
     {
+
+        ammoInfoText.text = currentAmmo + "/" + magazineAmmo;
+        if (currentAmmo == 0)
+        {
+            animator.SetBool("isShooting", false);
+            return;
+        }
+
         //完成射击操作:对物体造成射击影响，如物体呗击退，敌人被射倒，粒子特效
         bool isShooting = Mathf.Approximately(shootAction.ReadValue<float>(), 1f);
         animator.SetBool("isShooting", isShooting);
@@ -34,10 +57,16 @@ public class GunController : MonoBehaviour
             nextTimeToShoot = Time.time + 1f / fireRate;
             Fire();
         }
-
+        //
+        if (currentAmmo == 0 && magazineAmmo > 0 && !isReload)
+        {
+            StartCoroutine(Reload());
+        }
     }
     void Fire()
     {
+        muzzleFlash.Play();
+        currentAmmo--;
         //使用射线检测是否射击到游戏对象
         RaycastHit hit;
         if (Physics.Raycast(muzzle.position, muzzle.forward, out hit, range))
@@ -50,7 +79,19 @@ public class GunController : MonoBehaviour
             GameObject impactEffect = Instantiate(impactEffected, hit.point, impactRotation);
             impactEffect.transform.parent = hit.transform;
         }
-        muzzleFlash.Play();
+    }
+    IEnumerator Reload()
+    {
+        animator.SetBool("isReload", true);
+        isReload = true;
+        yield return new WaitForSeconds(1f);
+        animator.SetBool("isReload", false);
 
+        if (magazineAmmo > 0)
+        {
+            magazineAmmo -= maxAmmo;
+            currentAmmo = maxAmmo;
+        }
+        isReload = false;
     }
 }
