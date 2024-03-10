@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject groundCheck;
     private float groundCheckDistance = 0.3f;
     private bool isGrounded = false;
+
+    [SerializeField] private Animator animator;
+
     //使用新输入管理系统
     private InputAction moveAction;
     private InputAction jumpAction;
@@ -56,6 +59,7 @@ public class PlayerController : MonoBehaviour
         float moveY = moveAction.ReadValue<Vector2>().y;
         move = transform.right * moveX + transform.forward * moveY;
         characterController.Move(move * moveSpeed * Time.deltaTime);
+        animator.SetFloat("Speed",Mathf.Abs(moveY)+Mathf.Abs(moveX));//取绝对值
         /*        //鼠标控制旋转
                 float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
                 float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;

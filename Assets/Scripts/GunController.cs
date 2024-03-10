@@ -13,6 +13,8 @@ public class GunController : MonoBehaviour
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private Transform muzzle;
     [SerializeField] private GameObject impactEffected;
+
+    [SerializeField] private Animator animator;
     //射击间隔
     private float nextTimeToShoot = 0;
     private void Start()
@@ -26,6 +28,7 @@ public class GunController : MonoBehaviour
     {
         //完成射击操作:对物体造成射击影响，如物体呗击退，敌人被射倒，粒子特效
         bool isShooting = Mathf.Approximately(shootAction.ReadValue<float>(), 1f);
+        animator.SetBool("isShooting", isShooting);
         if (isShooting && Time.time >= nextTimeToShoot)
         {
             nextTimeToShoot = Time.time + 1f / fireRate;
