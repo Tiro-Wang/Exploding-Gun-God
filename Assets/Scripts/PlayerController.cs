@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController characterController;
     private Vector3 move;
-    private float moveSpeed = 15f;
-    private float mouseSensitivity = 100f;
+    private float moveSpeed = 10f;
+    private float mouseSensitivity = 50f;
     [SerializeField] GameObject playerHead;
     private float xRotate;
     private Vector3 verticality;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         //将mouse锁定在游戏界面
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         jumpAction = new InputAction("Jump", binding: "<Gamepad>/a");
         jumpAction.AddBinding("<keyboard>/space");
