@@ -3256,7 +3256,7 @@ MonoBehaviour:
   impactEffected: {fileID: 100002, guid: 957385c45b877e645a128e11a3efb2f9, type: 3}
   animator: {fileID: 1380533178}
   currentAmmo: 4
-  maxAmmo: 6
+  maxAmmo: 4
   magazineAmmo: 16
   ammoInfoText: {fileID: 369266436}
 --- !u!43 &1251988112

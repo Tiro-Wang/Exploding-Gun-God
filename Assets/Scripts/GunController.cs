@@ -16,16 +16,18 @@ public class GunController : MonoBehaviour
     [SerializeField] private Transform muzzle;
     [SerializeField] private GameObject impactEffected;
 
-    [SerializeField] private Animator animator;
+    [SerializeField] public Animator animator;
     //射击间隔
     private float nextTimeToShoot = 0;
     //配置弹药
-    [SerializeField] private int currentAmmo;
-    [SerializeField] private int maxAmmo = 10;
-    [SerializeField] private int magazineAmmo = 30;//弹夹
+    [SerializeField] public int currentAmmo;
+    [SerializeField] public int maxAmmo = 10;
+    [SerializeField] public int magazineAmmo = 30;//弹夹
 
-    [SerializeField] private TextMeshProUGUI ammoInfoText;
-    private bool isReload = false;
+    [SerializeField] public TextMeshProUGUI ammoInfoText;
+    public bool isReload = false;
+
+    [SerializeField] private WeaponsSwitching weaponsSwitching;
     private void Start()
     {
         //配置射击动作
@@ -37,18 +39,22 @@ public class GunController : MonoBehaviour
     {
         isReload = false;
         animator.SetBool("isReload", false);
-
     }
     private void Update()
     {
 
         ammoInfoText.text = currentAmmo + "/" + magazineAmmo;
-        if (currentAmmo == 0)
+        if (currentAmmo == 0 && magazineAmmo == 0)
         {
             animator.SetBool("isShooting", false);
             return;
         }
+        if (isReload==true)
+        {
+            animator.SetBool("isShooting", false);
 
+            return;
+        }
         //完成射击操作:对物体造成射击影响，如物体呗击退，敌人被射倒，粒子特效
         bool isShooting = Mathf.Approximately(shootAction.ReadValue<float>(), 1f);
         animator.SetBool("isShooting", isShooting);
@@ -80,18 +86,28 @@ public class GunController : MonoBehaviour
             impactEffect.transform.parent = hit.transform;
         }
     }
-    IEnumerator Reload()
+    public IEnumerator Reload()
     {
         animator.SetBool("isReload", true);
         isReload = true;
         yield return new WaitForSeconds(1f);
         animator.SetBool("isReload", false);
-
-        if (magazineAmmo > 0)
+        // 检查弹夹剩余子弹数是否大于等于最大子弹数
+        if (magazineAmmo >= maxAmmo)
         {
-            magazineAmmo -= maxAmmo;
+            // 将当前子弹数设为最大子弹数
             currentAmmo = maxAmmo;
+            // 减去满载的子弹数
+            magazineAmmo -= maxAmmo;
+        }
+        else
+        {
+            // 将当前子弹数设为弹夹剩余子弹数
+            currentAmmo = magazineAmmo;
+            // 清空弹夹剩余子弹数
+            magazineAmmo = 0;
         }
         isReload = false;
+
     }
 }

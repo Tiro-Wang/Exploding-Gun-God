@@ -8,6 +8,7 @@ public class WeaponsSwitching : MonoBehaviour
     private InputAction switchAction;
 
     [SerializeField] private int selectWeaponIndex = 0;
+    private int previouslySelectedIndex = 0; // 初始化为默认的第一个武器索引
     //[SerializeField] Transform[] weapons;
 
     private void Start()
@@ -20,7 +21,8 @@ public class WeaponsSwitching : MonoBehaviour
     private void Update()
     {
         float scrollValue = switchAction.ReadValue<Vector2>().y;
-        float preventIndex = selectWeaponIndex;
+        // 记录当前选中武器的索引作为上一次选择的武器索引
+        previouslySelectedIndex = selectWeaponIndex;
         if (scrollValue > 0)//向上滑
         {
             selectWeaponIndex--;
@@ -37,17 +39,22 @@ public class WeaponsSwitching : MonoBehaviour
                 selectWeaponIndex = 0;
             }
         }
-        if (preventIndex!=selectWeaponIndex)
+        if (previouslySelectedIndex != selectWeaponIndex)
         {
             SelectWeapon();
         }
+
     }
     private void SelectWeapon()
     {
-        foreach (Transform weapon in transform)
-        {
-            weapon.gameObject.SetActive(false);
-        }
-        transform.GetChild(selectWeaponIndex).gameObject.SetActive(true);
+            // 所有武器设置为不可见
+            foreach (Transform weapon in transform)
+            {
+                weapon.gameObject.SetActive(false);
+            }
+
+            // 激活新选中的武器
+            transform.GetChild(selectWeaponIndex).gameObject.SetActive(true);
+        
     }
 }
