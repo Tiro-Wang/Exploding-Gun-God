@@ -16,15 +16,15 @@ public class GunController : MonoBehaviour
     [SerializeField] private Transform muzzle;
     [SerializeField] private GameObject impactEffected;
 
-    [SerializeField] public Animator animator;
+    [SerializeField] private Animator animator;
     //射击间隔
     private float nextTimeToShoot = 0;
     //配置弹药
     [SerializeField] public int currentAmmo;
-    [SerializeField] public int maxAmmo = 10;
-    [SerializeField] public int magazineAmmo = 30;//弹夹
+    [SerializeField] private int maxAmmo = 10;
+    [SerializeField] private int magazineAmmo = 30;//弹夹
 
-    [SerializeField] public TextMeshProUGUI ammoInfoText;
+    [SerializeField] private TextMeshProUGUI ammoInfoText;
     public bool isReload = false;
 
     [SerializeField] private WeaponsSwitching weaponsSwitching;
@@ -44,15 +44,14 @@ public class GunController : MonoBehaviour
     {
 
         ammoInfoText.text = currentAmmo + "/" + magazineAmmo;
-        if (currentAmmo == 0 && magazineAmmo == 0)
-        {
-            animator.SetBool("isShooting", false);
-            return;
-        }
+        //if (currentAmmo == 0 && magazineAmmo == 0)
+        //{
+        //    animator.SetBool("isShooting", false);
+        //    return;
+        //}
         if (isReload==true)
         {
             animator.SetBool("isShooting", false);
-
             return;
         }
         //完成射击操作:对物体造成射击影响，如物体呗击退，敌人被射倒，粒子特效
@@ -108,6 +107,5 @@ public class GunController : MonoBehaviour
             magazineAmmo = 0;
         }
         isReload = false;
-
     }
 }
