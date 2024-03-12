@@ -44,11 +44,11 @@ public class GunController : MonoBehaviour
     {
 
         ammoInfoText.text = currentAmmo + "/" + magazineAmmo;
-        //if (currentAmmo == 0 && magazineAmmo == 0)
-        //{
-        //    animator.SetBool("isShooting", false);
-        //    return;
-        //}
+        if (currentAmmo == 0 && magazineAmmo == 0)
+        {
+            animator.SetBool("isShooting", false);
+            return;
+        }
         if (isReload==true)
         {
             animator.SetBool("isShooting", false);
