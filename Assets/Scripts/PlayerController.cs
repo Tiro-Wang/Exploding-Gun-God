@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 move;
     private float moveSpeed = 10f;
     private float mouseSensitivity = 50f;
-    [SerializeField] GameObject playerHead;
+    [SerializeField] private Camera playerHead;
     private float xRotate;
     private Vector3 verticality;
     private float gravity = -9.87f;
