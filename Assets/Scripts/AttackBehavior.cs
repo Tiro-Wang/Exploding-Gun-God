@@ -17,7 +17,7 @@ public class AttackBehavior : StateMachineBehaviour
     {
         animator.transform.LookAt(player);
         float distance = Vector3.Distance(animator.transform.position, player.position);
-        if (distance > 13f)
+        if (distance > 8f)
         {
             animator.SetBool("isAttacking", false);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,6 +29,11 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
 
+    //受到伤害
+    private int playerHp = 100;
+    [SerializeField] private GameObject bloodOverlay;
+    [SerializeField] private TextMeshProUGUI playerHpText;
+    [SerializeField] private GameManager gameManager;
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -59,7 +65,7 @@ public class PlayerController : MonoBehaviour
         float moveY = moveAction.ReadValue<Vector2>().y;
         move = transform.right * moveX + transform.forward * moveY;
         characterController.Move(move * moveSpeed * Time.deltaTime);
-        animator.SetFloat("Speed",Mathf.Abs(moveY)+Mathf.Abs(moveX));//取绝对值
+        animator.SetFloat("Speed", Mathf.Abs(moveY) + Mathf.Abs(moveX));//取绝对值
         /*        //鼠标控制旋转
                 float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
                 float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -118,5 +124,20 @@ public class PlayerController : MonoBehaviour
         }
         //在执行实际移动时，将速度向量转换为每帧的实际位移，同样保证了移动速度与帧率无关，实现平滑的物理运动模拟。
         characterController.Move(verticality * Time.deltaTime);
+    }
+
+    //
+    public IEnumerator TakeDamage(int damage)
+    {
+        bloodOverlay.SetActive(true);
+        playerHp -= damage;
+        playerHpText.text = "+" + playerHp;
+        if (playerHp <= 0)
+        {
+            playerHpText.text = "0";
+            gameManager.GameOver();
+        }
+        yield return new WaitForSeconds(1f);
+        bloodOverlay.SetActive(false);
     }
 }

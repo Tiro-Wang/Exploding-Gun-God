@@ -12,7 +12,7 @@ public class ChaseBehavior : StateMachineBehaviour
     {
         agent = animator.GetComponent<NavMeshAgent>();
         player = GameObject.FindWithTag("Player").transform;
-
+        agent.isStopped = false;
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -29,7 +29,8 @@ public class ChaseBehavior : StateMachineBehaviour
     //OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        agent.SetDestination(animator.transform.position);
+        agent.destination = animator.transform.position;
+        agent.isStopped = true;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
