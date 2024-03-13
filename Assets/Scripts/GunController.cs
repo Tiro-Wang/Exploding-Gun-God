@@ -28,6 +28,7 @@ public class GunController : MonoBehaviour
     public bool isReload = false;
 
     [SerializeField] private WeaponsSwitching weaponsSwitching;
+
     private void Start()
     {
         //配置射击动作
@@ -80,6 +81,14 @@ public class GunController : MonoBehaviour
             {
                 hit.rigidbody.AddForce(-hit.normal * impactForce);//在 hit 的法线方向上施加瞬时力
             }
+             EnemyController enemy=hit.transform.GetComponent<EnemyController>();
+            if (enemy)
+            {
+                enemy.TakeDamage(50);
+                //直接跳出
+                return;
+            }
+
             Quaternion impactRotation = Quaternion.LookRotation(hit.normal);
             GameObject impactEffect = Instantiate(impactEffected, hit.point, impactRotation);
             impactEffect.transform.parent = hit.transform;
