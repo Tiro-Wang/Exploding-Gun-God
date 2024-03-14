@@ -15,16 +15,15 @@ public class Projectile : MonoBehaviour
     {
         GameObject impact = Instantiate(impactEffect, transform.position, Quaternion.identity);
         Destroy(impact, 2f);
-        Destroy(gameObject);
         Collider[] colliders = Physics.OverlapSphere(transform.position, 3f);
         foreach (Collider collider in colliders)
         {
             if (collider.CompareTag("Player"))
             {
                 StartCoroutine(player.TakeDamage(10));
-
             }
         }
+        Destroy(gameObject,2f);
 
     }
 }

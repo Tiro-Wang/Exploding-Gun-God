@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         //将mouse锁定在游戏界面
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
 
         jumpAction = new InputAction("Jump", binding: "<Gamepad>/a");
         jumpAction.AddBinding("<keyboard>/space");

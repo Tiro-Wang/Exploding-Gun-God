@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0;
         isGameOver = true;
+        Cursor.lockState= CursorLockMode.None;
         gameOverPanel.SetActive(true);
     }
     public void RestartGame()
     {
+        Debug.Log("11");
         Time.timeScale = 1f;
         isGameOver = false;
         gameOverPanel.SetActive(false);
